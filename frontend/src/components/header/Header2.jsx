@@ -1,3 +1,4 @@
+import React from 'react';
 import { ExpandMore, ShoppingCartOutlined } from "@mui/icons-material";
 import {
   Badge,

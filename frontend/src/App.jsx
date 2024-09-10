@@ -1,3 +1,4 @@
+import React from 'react';
 import Header2 from "./components/header/Header2";
 import Header1 from "./components/header/Header1";
 import Header3 from "./components/header/Header3";

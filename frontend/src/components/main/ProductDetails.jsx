@@ -1,13 +1,19 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/no-unescaped-entities */
+import React, { useState } from 'react';
 import { AddShoppingCartOutlined } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { useState } from "react";
 
 const ProductDetails = ({ clickedProduct }) => {
-  const [selectedImg, setselectedImg] = useState(0);
+  const [selectedImg, setSelectedImg] = useState(0);
+
+  if (!clickedProduct || !clickedProduct.attributes || !clickedProduct.attributes.productimg || !clickedProduct.attributes.productimg.data) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  const images = clickedProduct.attributes.productimg.data;
+  const currentImage = images[selectedImg]?.attributes?.formats?.small?.url || '';
+
   return (
     <Box
       sx={{
@@ -20,23 +26,20 @@ const ProductDetails = ({ clickedProduct }) => {
       <Box sx={{ display: "flex" }}>
         <img
           width={360}
-          src={
-            clickedProduct.attributes.productImg.data[selectedImg].attributes
-              .url
-          }
-          alt=""
+          src={currentImage}
+          alt={clickedProduct.attributes.productTitle || "Product Image"}
         />
       </Box>
 
       <Box sx={{ py: 2, textAlign: { xs: "center", sm: "left" } }}>
         <Typography variant="h5">
-          {clickedProduct.attributes.productTitle}
+          {clickedProduct.attributes.productTitle || "Product Title"}
         </Typography>
         <Typography my={0.4} fontSize={"22px"} color={"crimson"} variant="h6">
-          ${clickedProduct.attributes.productPrice}
+          ${clickedProduct.attributes.productPrice || "Price"}
         </Typography>
         <Typography variant="body1">
-          {clickedProduct.attributes.productDescription}
+          {clickedProduct.attributes.productDiscripcion || "Product Description"}
         </Typography>
 
         <Stack
@@ -57,32 +60,28 @@ const ProductDetails = ({ clickedProduct }) => {
               },
             }}
           >
-            {clickedProduct.attributes.productImg.data.map((item, index) => {
-              return (
-                <ToggleButton
-                  key={item.id}
-                  value={index}
-                  sx={{
-                    width: "110px",
-                    height: "110px",
-                    mx: 1,
-                    p: "0",
-                    opacity: "0.5",
-                  }}
-                >
-                  <img
-                    onClick={() => {
-                      setselectedImg(index);
-                    }}
-                    style={{ borderRadius: 3 }}
-                    height={"100%"}
-                    width={"100%"}
-                    src={item.attributes.url}
-                    alt=""
-                  />
-                </ToggleButton>
-              );
-            })}
+            {images.map((item, index) => (
+              <ToggleButton
+                key={item.id}
+                value={index}
+                sx={{
+                  width: "110px",
+                  height: "110px",
+                  mx: 1,
+                  p: "0",
+                  opacity: "0.5",
+                }}
+              >
+                <img
+                  onClick={() => setSelectedImg(index)}
+                  style={{ borderRadius: 3 }}
+                  height={"100%"}
+                  width={"100%"}
+                  src={item.attributes?.formats?.thumbnail?.url || ''}
+                  alt={`Thumbnail ${index}`}
+                />
+              </ToggleButton>
+            ))}
           </ToggleButtonGroup>
         </Stack>
 

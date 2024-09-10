@@ -1,3 +1,4 @@
+
 import {
   Box,
   Button,
@@ -166,7 +167,7 @@ const Main = () => {
                   <CardMedia
                     sx={{ height: 277 }}
                     // @ts-ignore 
-                    image={`${import.meta.env.VITE_API_URL}${item.attributes.productImg.data[0].attributes.formats.small.url}`}
+                    image={`${item.attributes.productimg.data[0].attributes.url}`}
                     title="green iguana"
                   />
 
